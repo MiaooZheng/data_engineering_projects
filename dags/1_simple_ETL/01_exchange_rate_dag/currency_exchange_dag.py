@@ -22,6 +22,8 @@ def get_data_from_API_and_savein_S3():
     date = datetime.today().strftime("%Y%m%d")
     # get the most recent exchange rate data
     # i change to another free api, no api_key needed
+
+    
     url = f"https://api.exchangerate.host/latest"
     headers = {
           "Accept": "application/json",
