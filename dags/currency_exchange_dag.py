@@ -4,7 +4,7 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 from airflow.providers.postgres.hooks.postgres import PostgresHook
-from airflow.models import Variable
+
 from datetime import datetime
 import os
 import requests
@@ -12,21 +12,28 @@ import json
 from io import StringIO 
 
 
-S3_BUCKET = Variable.get('s3_bucket_name') # this is not for free, but more secure
+S3_BUCKET = os.getenv('S3_BUCKET')
 api_key = os.getenv('api_key')
 print(api_key)
 
 
-def get_data_from_API_and_savein_S3(api_key, currencies='CNY', source='USD'): 
+
+def get_data_from_API_and_savein_S3(): 
     date = datetime.today().strftime("%Y%m%d")
     # get the most recent exchange rate data
-    url = f"http://apilayer.net/api/live?access_key={api_key}&currencies={currencies}&source={source}"
+    # i change to another free api, no api_key needed
+    url = f"https://api.exchangerate.host/latest"
     headers = {
           "Accept": "application/json",
           "Connection": "keep-alive",
             }
     response = requests.get(url = url, headers=headers)
     json_file = response.json()
+
+    # remove unrelated columns
+    del json_file['motd']
+    del json_file['success']
+
     string =  json.dumps(json_file)
     fp = StringIO(string)
     s3_hook = S3Hook(aws_conn_id = 's3_connection', region_name = 'us-east-2')
