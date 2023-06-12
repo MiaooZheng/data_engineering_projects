@@ -14,3 +14,10 @@ This is a repo for me to practice data engineering skills. There are several ski
 - **Devops**: learn how to write unit tests. In addition, I also want to learn how to write a config files instead of hard coding. Then CI/CD pipelines,etc. 
 - **BI**: **I'll focus on it. how to visualize it. how to turn raw data into useful business metrics and KPIs. and also develop reporting to non-technical users.**
 - **Communication**: this is the one skill that I personally think I really need to improve. Be confident and express in a concise and clear way
+
+
+
+--------- 
+#### Where to check projects:
+
+1. **For ETL process**, projects are in dags folder, but due to the price of redshift, I haven't figured out how to show the load step.
